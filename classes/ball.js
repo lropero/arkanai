@@ -5,7 +5,7 @@ class Ball extends Polygon {
     const ballRadius = Math.round(settings.ball.radius)
     const ballSides = Math.round(settings.ball.sides)
     this.alpha = settings.alpha
-    this.color = settings.ball.colors[Math.floor(Math.random() * settings.ball.colors.length)]
+    this.color = settings.games === 1 ? 'white' : settings.ball.colors[Math.floor(Math.random() * settings.ball.colors.length)]
     this.playing = false
     this.radius = ballRadius
     this.sides = ballSides > 2 ? ballSides : 3

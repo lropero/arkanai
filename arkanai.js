@@ -3,7 +3,7 @@ const settings = {
   brick: { colors: ['#957dad', '#d291bc', '#e0bbe4', '#fec8d8', '#ffdfd3'], height: 32, padding: 50, width: 80 },
   games: 50,
   padding: 30,
-  paddle: { color: '#253da1', height: 18, width: 180 },
+  paddle: { color: '#4020d0', height: 18, width: 180 },
   rows: 7
 }
 

@@ -39,7 +39,7 @@ class Paddle extends Polygon {
       this.ball.x = this.x
       this.ball.y = this.y - this.height / 2 - this.ball.radius
     } else if (frame === 200) {
-      const angle = goingLeft ? 45 : goingRight ? 135 : Math.floor(Math.random() * 161) + 10
+      const angle = goingLeft ? 40 : goingRight ? 140 : Math.floor(Math.random() * 161) + 10
       this.ball.direction = { x: -Math.cos(angle * (Math.PI / 180)), y: -Math.sin(angle * (Math.PI / 180)) }
       this.ball.playing = true
     }
