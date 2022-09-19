@@ -121,7 +121,7 @@ class Game {
       if (collision.type === 'paddle') {
         this.paddle.ghost = true
         const angle = ((collision.x - this.paddle.x + this.paddle.width / 2) * 140) / this.paddle.width + 20
-        this.ball.direction = { x: -Math.cos(angle * (Math.PI / 180)), y: -Math.sin(angle * (Math.PI / 180)) }
+        this.ball.direction = { x: 2 * -Math.cos(angle * (Math.PI / 180)), y: 2 * -Math.sin(angle * (Math.PI / 180)) }
       } else {
         this.ball.direction.x *= collision.direction === 'vertical' ? -1 : 1
         this.ball.direction.y *= collision.direction === 'horizontal' ? -1 : 1
@@ -129,8 +129,12 @@ class Game {
       if (collision.direction === 'both') {
         switch (collision.type) {
           case 'border': {
-            this.ball.direction.x *= -1
-            this.ball.direction.y *= -1
+            if (collision.y > this.paddle.y) {
+              this.lost = true
+            } else {
+              this.ball.direction.x *= -1
+              this.ball.direction.y *= -1
+            }
             break
           }
           case 'brick': {
