@@ -1,0 +1,21 @@
+{
+  "name": "arkanai",
+  "version": "1.0.0",
+  "description": "Arkanoid with neural networks.",
+  "main": "index.html",
+  "scripts": {
+    "audit": "npx upgradeps -v",
+    "clean": "npx rimraf package-lock.json && npx rimraf node_modules",
+    "lint": "npx prettier-standard --lint",
+    "nuke": "npm run clean && npm cache verify && npm install",
+    "start": "npx serve"
+  },
+  "devDependencies": {
+    "prettier-standard": "^16.4.1",
+    "serve": "^14.0.1",
+    "upgradeps": "^2.0.4"
+  },
+  "author": "Luciano Ropero <lropero@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true
+}
