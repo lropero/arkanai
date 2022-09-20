@@ -5,8 +5,10 @@ class Game {
     this.ball = new Ball({ settings })
     this.bricks = []
     this.lost = false
+    this.multiplier = 1
     // eslint-disable-next-line no-undef
     this.paddle = new Paddle({ ball: this.ball, canvas, settings })
+    this.score = 0
     const brickHeight = Math.round(settings.brick.height)
     const brickPadding = Math.round(settings.brick.padding)
     const brickWidth = Math.round(settings.brick.width)
@@ -42,6 +44,11 @@ class Game {
     }
   }
 
+  gameOver () {
+    console.log('score:', this.score)
+    this.lost = true
+  }
+
   getCollision () {
     // eslint-disable-next-line no-undef
     let touches = getTouches(this.ball.polygon, this.polygon)
@@ -57,6 +64,10 @@ class Game {
       // eslint-disable-next-line no-undef
       touches = getTouches(this.ball.polygon, this.paddle.polygon)
       if (touches) {
+        if (this.multiplier === 1) {
+          this.score = Math.round(this.score / 2)
+        }
+        this.multiplier = 1
         const directions = Object.keys(touches)
         if (directions.length > 1) {
           // eslint-disable-next-line no-undef
@@ -71,6 +82,11 @@ class Game {
         touches = getTouches(this.ball.polygon, brick.polygon)
         if (touches) {
           brick.hit = true
+          this.score += this.multiplier++
+          if (this.bricks.filter(brick => !brick.hit).length === 0) {
+            this.score *= 2
+            this.gameOver()
+          }
           const directions = Object.keys(touches)
           if (directions.length > 1) {
             // eslint-disable-next-line no-undef
@@ -130,7 +146,7 @@ class Game {
         switch (collision.type) {
           case 'border': {
             if (collision.y > this.paddle.y) {
-              this.lost = true
+              this.gameOver()
             } else {
               this.ball.direction.x *= -1
               this.ball.direction.y *= -1
@@ -138,8 +154,8 @@ class Game {
             break
           }
           case 'brick': {
-            this.ball.direction.x *= (this.ball.direction.x > 0 && this.ball.x <= collision.brick.x) || (this.ball.direction.x < 0 && this.ball.x >= collision.brick.x) ? -1 : 1
-            this.ball.direction.y *= (this.ball.direction.y > 0 && this.ball.y <= collision.brick.y) || (this.ball.direction.y < 0 && this.ball.y >= collision.brick.y) ? -1 : 1
+            // this.ball.direction.x *= (this.ball.direction.x > 0 && this.ball.x <= collision.brick.x) || (this.ball.direction.x < 0 && this.ball.x >= collision.brick.x) ? -1 : 1
+            // this.ball.direction.y *= (this.ball.direction.y > 0 && this.ball.y <= collision.brick.y) || (this.ball.direction.y < 0 && this.ball.y >= collision.brick.y) ? -1 : 1
             break
           }
           case 'paddle': {
@@ -150,7 +166,7 @@ class Game {
         }
       }
       if (collision.type === 'border' && collision.y === canvas.height) {
-        this.lost = true
+        this.gameOver()
       }
     }
   }
