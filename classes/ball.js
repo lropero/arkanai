@@ -9,6 +9,7 @@ class Ball extends Polygon {
     this.playing = false
     this.radius = ballRadius
     this.sides = ballSides > 2 ? ballSides : 3
+    this.speed = settings.ball.speed
   }
 
   createPolygon () {

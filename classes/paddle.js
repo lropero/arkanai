@@ -13,6 +13,7 @@ class Paddle extends Polygon {
     this.goLeft = false
     this.goRight = false
     this.height = paddleHeight > 0 ? paddleHeight : 1
+    this.speed = settings.paddle.speed
     this.width = paddleWidth >= ballDiameter && paddleWidth < canvas.width - 1 ? paddleWidth : ballDiameter
     this.x = canvas.width / 2
     this.y = canvas.height - this.height / 2 - padding
@@ -40,13 +41,13 @@ class Paddle extends Polygon {
       this.ball.y = this.y - this.height / 2 - this.ball.radius
     } else if (frame === 200) {
       const angle = goingLeft ? 40 : goingRight ? 140 : Math.floor(Math.random() * 161) + 10
-      this.ball.direction = { x: 2 * -Math.cos(angle * (Math.PI / 180)), y: 2 * -Math.sin(angle * (Math.PI / 180)) }
+      this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
       this.ball.playing = true
     }
     if (goingLeft) {
-      this.x -= 2.2
+      this.x -= this.speed
     } else if (goingRight) {
-      this.x += 2.2
+      this.x += this.speed
     }
     if (this.x > canvas.width - this.width / 2) {
       this.x = canvas.width - this.width / 2
