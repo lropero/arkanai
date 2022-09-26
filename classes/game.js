@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 class Game {
-  constructor ({ AI, canvas, settings }) {
+  constructor ({ brain, canvas, settings }) {
     // eslint-disable-next-line no-undef
     this.ball = new Ball({ settings })
     this.bricks = []
     this.lost = false
     this.multiplier = 1
     // eslint-disable-next-line no-undef
-    this.paddle = new Paddle({ ball: this.ball, canvas, settings })
+    this.paddle = new Paddle({ ball: this.ball, brain, canvas, settings })
     this.score = 0
     const brickHeight = Math.round(settings.brick.height)
     const brickPadding = Math.round(settings.brick.padding)
@@ -24,7 +24,6 @@ class Game {
       }
     }
     this.polygon = this.createPolygon(canvas)
-    this.setControls(AI)
   }
 
   createPolygon (canvas) {
@@ -45,7 +44,6 @@ class Game {
   }
 
   gameOver () {
-    console.log('score:', this.score)
     this.lost = true
   }
 
@@ -66,6 +64,9 @@ class Game {
       if (touches) {
         if (this.multiplier === 1) {
           this.score = Math.round(this.score / 2)
+          if (this.score === 1) {
+            this.gameOver()
+          }
         }
         this.multiplier = 1
         const directions = Object.keys(touches)
@@ -99,39 +100,10 @@ class Game {
     return null
   }
 
-  setControls (AI) {
-    if (!AI) {
-      document.onkeydown = event => {
-        switch (event.key) {
-          case 'ArrowLeft': {
-            this.paddle.goLeft = true
-            break
-          }
-          case 'ArrowRight': {
-            this.paddle.goRight = true
-            break
-          }
-        }
-      }
-      document.onkeyup = event => {
-        switch (event.key) {
-          case 'ArrowLeft': {
-            this.paddle.goLeft = false
-            break
-          }
-          case 'ArrowRight': {
-            this.paddle.goRight = false
-            break
-          }
-        }
-      }
-    }
-  }
-
   update ({ canvas, ctx, frame }) {
     this.drawBricks(ctx)
     this.paddle.update({ canvas, ctx, frame })
-    this.ball.update({ ctx })
+    this.ball.update({ canvas, ctx })
     const collision = this.getCollision()
     if (collision) {
       if (collision.type === 'paddle') {

@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef, no-unused-vars
 class Paddle extends Polygon {
-  constructor ({ ball, canvas, settings }) {
+  constructor ({ ball, brain, canvas, settings }) {
     super()
     const ballDiameter = Math.round(settings.ball.radius) * 2
     const padding = Math.round(settings.padding)
@@ -17,6 +17,11 @@ class Paddle extends Polygon {
     this.width = paddleWidth >= ballDiameter && paddleWidth < canvas.width - 1 ? paddleWidth : ballDiameter
     this.x = canvas.width / 2
     this.y = canvas.height - this.height / 2 - padding
+    if (brain) {
+      this.brain = brain
+    } else {
+      this.setControls()
+    }
   }
 
   createPolygon () {
@@ -28,11 +33,40 @@ class Paddle extends Polygon {
     ]
   }
 
+  setControls () {
+    document.onkeydown = event => {
+      switch (event.key) {
+        case 'ArrowLeft': {
+          this.goLeft = true
+          break
+        }
+        case 'ArrowRight': {
+          this.goRight = true
+          break
+        }
+      }
+    }
+    document.onkeyup = event => {
+      switch (event.key) {
+        case 'ArrowLeft': {
+          this.goLeft = false
+          break
+        }
+        case 'ArrowRight': {
+          this.goRight = false
+          break
+        }
+      }
+    }
+  }
+
   update ({ canvas, ctx, frame }) {
-    this.goLeft = Math.random() > 0.5
-    this.goRight = Math.random() > 0.5
-    if (this.ghost && this.ball.y < this.y - this.height / 2 - this.ball.radius) {
-      this.ghost = false
+    if (this.brain && frame > 1) {
+      const inputs = [(this.x - this.width / 2) / (canvas.width - this.width), (this.ball.x - this.ball.radius) / (canvas.width - this.ball.radius * 2), (canvas.height - this.ball.y - this.ball.radius) / (canvas.height - this.ball.radius * 2), this.ball.direction.x / this.ball.speed, -this.ball.direction.y / this.ball.speed]
+      // eslint-disable-next-line no-undef
+      const outputs = NeuralNetwork.feedForward({ inputs, network: this.brain })
+      this.goLeft = outputs[0] > 0.5
+      this.goRight = outputs[1] > 0.5
     }
     const goingLeft = this.goLeft && !this.goRight
     const goingRight = !this.goLeft && this.goRight
@@ -40,7 +74,7 @@ class Paddle extends Polygon {
       this.ball.x = this.x
       this.ball.y = this.y - this.height / 2 - this.ball.radius
     } else if (frame === 200) {
-      const angle = goingLeft ? 40 : goingRight ? 140 : Math.floor(Math.random() * 161) + 10
+      const angle = goingLeft ? 40 : goingRight ? 140 : 90 // Math.floor(Math.random() * 161) + 10
       this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
       this.ball.playing = true
     }
@@ -56,6 +90,8 @@ class Paddle extends Polygon {
     }
     if (!this.ball.playing) {
       this.ball.x = this.x
+    } else if (this.ghost && this.ball.y < this.y - this.height / 2 - this.ball.radius) {
+      this.ghost = false
     }
     this.polygon = this.createPolygon()
     this.draw(ctx)

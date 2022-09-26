@@ -6,6 +6,7 @@ class Ball extends Polygon {
     const ballSides = Math.round(settings.ball.sides)
     this.alpha = settings.alpha
     this.color = settings.games === 1 ? 'white' : settings.ball.colors[Math.floor(Math.random() * settings.ball.colors.length)]
+    this.direction = { x: 0, y: 0 }
     this.playing = false
     this.radius = ballRadius
     this.sides = ballSides > 2 ? ballSides : 3
@@ -24,11 +25,23 @@ class Ball extends Polygon {
     return points
   }
 
-  update ({ ctx }) {
+  update ({ canvas, ctx }) {
     if (this.x && this.y) {
       if (this.playing) {
         this.x += this.direction.x
         this.y += this.direction.y
+        if (this.x - this.radius < 0) {
+          this.x = this.radius
+        }
+        if (this.x + this.radius > canvas.width) {
+          this.x = canvas.width - this.radius
+        }
+        if (this.y - this.radius < 0) {
+          this.y = this.radius
+        }
+        if (this.y + this.radius > canvas.height) {
+          this.y = canvas.height - this.radius
+        }
       }
       this.polygon = this.createPolygon()
       this.draw(ctx)

@@ -51,4 +51,21 @@ const getTouches = (polygon1, polygon2) => {
   return null
 }
 
+// eslint-disable-next-line no-unused-vars
+const hash = string => Math.abs(string.split('').reduce((hash, char) => ((hash << 5) - hash + char.charCodeAt(0)) | 0, 0))
+
 const lerp = (a, b, interpolation) => a + (b - a) * interpolation
+
+// eslint-disable-next-line no-unused-vars
+const relu = x => Math.max(0, x)
+
+// eslint-disable-next-line no-unused-vars
+const sigmoid = x => 1 / (1 + Math.exp(-x))
+
+// eslint-disable-next-line no-unused-vars
+const softmax = X => {
+  const max = Math.max(...X)
+  const scores = X.map(x => Math.exp(x - max))
+  const divisor = scores.reduce((a, b) => a + b)
+  return scores.map(score => score / divisor)
+}
