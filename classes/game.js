@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 class Game {
-  constructor ({ brain, canvas, settings }) {
+  constructor ({ brain, canvas, isBest, settings }) {
     // eslint-disable-next-line no-undef
     this.ball = new Ball({ settings })
     this.bricks = []
     this.lost = false
     this.multiplier = 1
     // eslint-disable-next-line no-undef
-    this.paddle = new Paddle({ ball: this.ball, brain, canvas, settings })
+    this.paddle = new Paddle({ ball: this.ball, brain, canvas, isBest, settings })
     this.score = 0
     const brickHeight = Math.round(settings.brick.height)
     const brickPadding = Math.round(settings.brick.padding)

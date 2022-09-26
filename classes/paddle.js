@@ -1,14 +1,14 @@
 // eslint-disable-next-line no-undef, no-unused-vars
 class Paddle extends Polygon {
-  constructor ({ ball, brain, canvas, settings }) {
+  constructor ({ ball, brain, canvas, isBest, settings }) {
     super()
     const ballDiameter = Math.round(settings.ball.radius) * 2
     const padding = Math.round(settings.padding)
     const paddleHeight = Math.round(settings.paddle.height)
     const paddleWidth = Math.round(settings.paddle.width)
-    this.alpha = settings.alpha
+    this.alpha = isBest ? 1 : settings.alpha
     this.ball = ball
-    this.color = settings.paddle.color
+    this.color = isBest ? 'green' : settings.paddle.color
     this.ghost = true
     this.goLeft = false
     this.goRight = false

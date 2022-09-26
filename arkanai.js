@@ -8,7 +8,7 @@ const settings = {
   rows: 7
 }
 
-settings.alpha = settings.games > 1 ? 0.5 : 1
+settings.alpha = settings.games > 1 ? 0.2 : 1
 
 const animate = ({ canvas, ctx, frame, games }) => {
   const openGames = games.filter(game => !game.lost)
@@ -45,7 +45,7 @@ const animate = ({ canvas, ctx, frame, games }) => {
         }
       }
       // eslint-disable-next-line no-undef
-      games.push(new Game({ brain, canvas, settings }))
+      games.push(new Game({ brain, canvas, isBest: bestBrain && i === 0, settings }))
     }
   }
   window.requestAnimationFrame(() => animate({ canvas, ctx, frame: ++frame, games }))
