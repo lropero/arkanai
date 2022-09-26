@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-undef, no-unused-vars
 class Ball extends Polygon {
-  constructor ({ settings }) {
+  constructor ({ isBest, settings }) {
     super()
     const ballRadius = Math.round(settings.ball.radius)
     const ballSides = Math.round(settings.ball.sides)
-    this.alpha = settings.alpha
-    this.color = settings.games === 1 ? 'white' : settings.ball.colors[Math.floor(Math.random() * settings.ball.colors.length)]
+    this.alpha = isBest ? 1 : settings.alpha
+    this.color = isBest ? '#ccc' : settings.ball.colors[Math.floor(Math.random() * settings.ball.colors.length)]
     this.direction = { x: 0, y: 0 }
     this.playing = false
     this.radius = ballRadius

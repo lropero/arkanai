@@ -2,7 +2,7 @@
 class Game {
   constructor ({ brain, canvas, isBest, settings }) {
     // eslint-disable-next-line no-undef
-    this.ball = new Ball({ settings })
+    this.ball = new Ball({ isBest, settings })
     this.bricks = []
     this.lost = false
     this.multiplier = 1

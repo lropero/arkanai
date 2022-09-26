@@ -8,7 +8,7 @@ class Paddle extends Polygon {
     const paddleWidth = Math.round(settings.paddle.width)
     this.alpha = isBest ? 1 : settings.alpha
     this.ball = ball
-    this.color = isBest ? 'green' : settings.paddle.color
+    this.color = isBest ? '#ccc' : settings.paddle.color
     this.ghost = true
     this.goLeft = false
     this.goRight = false
