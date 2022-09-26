@@ -4,7 +4,7 @@ Arkanoid with neural networks.
 
 ### Requires
 
-- [Node v16.17.0](https://nodejs.org/)
+- [Node v16.17.1](https://nodejs.org/)
 - npm v8.19.2
 
 ### Installation
