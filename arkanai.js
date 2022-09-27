@@ -36,8 +36,13 @@ const animate = ({ canvas, ctx, frame, games }) => {
         if (bestBrain) {
           brain = JSON.parse(bestBrain)
           if (i > 0) {
-            // eslint-disable-next-line no-undef
-            NeuralNetwork.mutate({ amount: Math.random(), network: brain })
+            if (Math.random() > 0.3) {
+              // eslint-disable-next-line no-undef
+              NeuralNetwork.mutate({ amount: 0.1, network: brain })
+            } else {
+              // eslint-disable-next-line no-undef
+              brain = new NeuralNetwork(settings.layers)
+            }
           }
         } else {
           // eslint-disable-next-line no-undef
