@@ -1,6 +1,6 @@
 # ArkanAI 🧱🧠
 
-Arkanoid with neural networks.
+Arkanoid with Deep-Q-Learning (work-in-progress).
 
 ### Requires
 
