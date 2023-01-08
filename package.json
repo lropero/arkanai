@@ -1,7 +1,10 @@
 {
   "name": "arkanai",
   "version": "1.0.0",
+  "private": true,
   "description": "Arkanoid with neural networks.",
+  "license": "UNLICENSED",
+  "author": "Luciano Ropero <lropero@gmail.com>",
   "main": "index.html",
   "scripts": {
     "audit": "npx upgradeps -v",
@@ -10,12 +13,12 @@
     "nuke": "npm run clean && npm cache verify && npm install",
     "start": "npx serve"
   },
-  "devDependencies": {
-    "prettier-standard": "^16.4.1",
-    "serve": "^14.0.1",
-    "upgradeps": "^2.0.4"
+  "dependencies": {
+    "@tensorflow/tfjs": "4.2.0"
   },
-  "author": "Luciano Ropero <lropero@gmail.com>",
-  "license": "UNLICENSED",
-  "private": true
+  "devDependencies": {
+    "prettier-standard": "16.4.1",
+    "serve": "14.1.2",
+    "upgradeps": "2.0.5"
+  }
 }

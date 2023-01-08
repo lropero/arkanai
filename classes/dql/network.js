@@ -1,3 +1,4 @@
+/*
 class Layer {
   constructor ({ inputCount, outputCount }) {
     this.biases = new Array(outputCount)
@@ -71,3 +72,4 @@ class NeuralNetwork {
     }
   }
 }
+*/
