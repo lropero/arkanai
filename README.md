@@ -1,6 +1,6 @@
 # ArkanAI 🧱🧠
 
-Arkanoid with Deep-Q-Learning (work-in-progress).
+Arkanoid with Deep Q-Learning (work-in-progress).
 
 ### Requires
 

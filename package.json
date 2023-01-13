@@ -5,18 +5,24 @@
   "description": "Arkanoid with neural networks.",
   "license": "UNLICENSED",
   "author": "Luciano Ropero <lropero@gmail.com>",
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "audit": "npx upgradeps -v",
     "clean": "npx rimraf package-lock.json && npx rimraf node_modules",
     "lint": "npx prettier-standard --lint",
     "nuke": "npm run clean && npm cache verify && npm install",
-    "start": "npx serve"
+    "start": "npx concurrently 'node index.js' 'npx serve public'"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "4.2.0"
+    "@tensorflow/tfjs-node": "4.2.0",
+    "lodash": "4.17.21"
   },
   "devDependencies": {
+    "concurrently": "7.6.0",
+    "cors": "2.8.5",
+    "express": "4.18.2",
+    "morgan": "1.10.0",
     "prettier-standard": "16.4.1",
     "serve": "14.1.2",
     "upgradeps": "2.0.5"

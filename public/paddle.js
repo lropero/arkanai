@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-undef, no-unused-vars
+/* eslint-disable no-undef, no-unused-vars */
+
 class Paddle extends Polygon {
   constructor ({ ball, settings }) {
     super()
@@ -60,6 +61,8 @@ class Paddle extends Polygon {
   // }
 
   update ({ action, frame }) {
+    this.goLeft = false
+    this.goRight = false
     if (['left', 'right'].includes(action)) {
       this.goLeft = action === 'left'
       this.goRight = action === 'right'

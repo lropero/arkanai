@@ -1,13 +1,12 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-undef, no-unused-vars */
+
 class Game {
   constructor ({ settings }) {
-    // eslint-disable-next-line no-undef
     this.ball = new Ball({ settings })
     this.bricks = []
     this.display = settings.display
     this.lost = false
     this.multiplier = 1
-    // eslint-disable-next-line no-undef
     this.paddle = new Paddle({ ball: this.ball, settings })
     this.score = 0
     const brickHeight = Math.round(settings.brick.height)
@@ -19,7 +18,6 @@ class Game {
     for (let col = 0; col < cols; col++) {
       for (let row = 0; row < rows; row++) {
         const margin = Math.max(padding, (this.display.canvas.width - cols * (brickPadding + brickWidth) + brickPadding) / 2)
-        // eslint-disable-next-line no-undef
         const brick = new Brick({ alpha: settings.alpha, color: settings.brick.colors[Math.floor(Math.random() * settings.brick.colors.length)], height: brickHeight, width: brickWidth, x: col * (brickPadding + brickWidth) + brickWidth / 2 + margin, y: row * (brickHeight + brickPadding * 0.8) + brickHeight / 2 + margin })
         this.bricks.push(brick)
       }
@@ -50,18 +48,15 @@ class Game {
   }
 
   getCollision () {
-    // eslint-disable-next-line no-undef
     let touches = getTouches(this.ball.polygon, this.polygon)
     if (touches) {
       const directions = Object.keys(touches)
       if (directions.length > 1) {
-        // eslint-disable-next-line no-undef
         return { direction: 'both', type: 'border', ...getCentroid(Object.values(touches)) }
       }
       return { direction: directions[0], type: 'border', ...touches[directions[0]] }
     }
     if (!this.paddle.ghost) {
-      // eslint-disable-next-line no-undef
       touches = getTouches(this.ball.polygon, this.paddle.polygon)
       if (touches) {
         if (this.multiplier === 1) {
@@ -73,7 +68,6 @@ class Game {
         this.multiplier = 1
         const directions = Object.keys(touches)
         if (directions.length > 1) {
-          // eslint-disable-next-line no-undef
           return { direction: 'both', type: 'paddle', ...getCentroid(Object.values(touches)) }
         }
         return { direction: directions[0], type: 'paddle', ...touches[directions[0]] }
@@ -81,7 +75,6 @@ class Game {
     }
     for (const brick of this.bricks) {
       if (!brick.hit) {
-        // eslint-disable-next-line no-undef
         touches = getTouches(this.ball.polygon, brick.polygon)
         if (touches) {
           brick.hit = true
@@ -92,7 +85,6 @@ class Game {
           }
           const directions = Object.keys(touches)
           if (directions.length > 1) {
-            // eslint-disable-next-line no-undef
             return { brick, direction: 'both', type: 'brick', ...getCentroid(Object.values(touches)) }
           }
           return { direction: directions[0], type: 'brick', ...touches[directions[0]] }
@@ -104,6 +96,7 @@ class Game {
 
   update ({ action, frame }) {
     this.reward = 0
+    this.display.ctx.clearRect(0, 0, this.display.canvas.width, this.display.canvas.height)
     this.drawBricks()
     this.paddle.update({ action, frame })
     this.ball.update()

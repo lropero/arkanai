@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
+
 class Polygon {
   draw (ctx) {
     ctx.globalAlpha = this.alpha

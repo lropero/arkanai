@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-undef, no-unused-vars
+/* eslint-disable no-undef, no-unused-vars */
+
 class Ball extends Polygon {
   constructor ({ settings }) {
     super()

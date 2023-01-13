@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-undef, no-unused-vars
+/* eslint-disable no-undef, no-unused-vars */
+
 class Brick extends Polygon {
   constructor ({ alpha, color, height, width, x, y }) {
     super()
