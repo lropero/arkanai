@@ -6,23 +6,24 @@ import Agent from './dql/agent.js'
 import routes from './routes.js'
 
 const agentSettings = {
-  alpha: 0.0005, // Learning rate
   epsilon: 1, // Exploration rate
-  epsilonDecay: 0.01, // Exploration decay
+  epsilonDecay: 0.00005, // Exploration decay
   epsilonMin: 0.01, // Exploration minimum
-  gamma: 0.99, // Discount factor
+  gamma: 0.95, // Discount factor
   memory: {
-    batchSize: 10,
-    size: 1000
+    batchSize: 64,
+    size: 100000
   },
   network: {
-    inputShape: 5,
+    alpha: 0.00025, // Learning rate
+    inputSize: 5,
     layers: [
       { activation: 'relu', units: 64 },
       { activation: 'relu', units: 64 }
     ],
-    outputShape: 3
-  }
+    outputSize: 3
+  },
+  tau: 1000 // Update of target network
 }
 
 const app = express()

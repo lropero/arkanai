@@ -1,11 +1,12 @@
 # ArkanAI 🧱🧠
 
-Arkanoid with Deep Q-Learning (work-in-progress).
+Arkanoid using Double Dueling Deep Q-Learning.
+_work-in-progress_
 
 ### Requires
 
 - [Node v18.13.0](https://nodejs.org/)
-- npm v9.2.0
+- npm v9.3.0
 
 ### Installation
 

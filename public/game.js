@@ -6,7 +6,6 @@ class Game {
     this.bricks = []
     this.display = settings.display
     this.lost = false
-    this.multiplier = 1
     this.paddle = new Paddle({ ball: this.ball, settings })
     this.score = 0
     const brickHeight = Math.round(settings.brick.height)
@@ -23,6 +22,10 @@ class Game {
       }
     }
     this.polygon = this.createPolygon()
+  }
+
+  addReward (reward) {
+    this.reward += reward
   }
 
   createPolygon () {
@@ -42,9 +45,8 @@ class Game {
     }
   }
 
-  gameOver (reward) {
+  gameOver () {
     this.lost = true
-    this.reward = reward
   }
 
   getCollision () {
@@ -59,13 +61,6 @@ class Game {
     if (!this.paddle.ghost) {
       touches = getTouches(this.ball.polygon, this.paddle.polygon)
       if (touches) {
-        if (this.multiplier === 1) {
-          this.score = Math.round(this.score / 2)
-          if (this.score === 1) {
-            this.gameOver(-1)
-          }
-        }
-        this.multiplier = 1
         const directions = Object.keys(touches)
         if (directions.length > 1) {
           return { direction: 'both', type: 'paddle', ...getCentroid(Object.values(touches)) }
@@ -78,10 +73,10 @@ class Game {
         touches = getTouches(this.ball.polygon, brick.polygon)
         if (touches) {
           brick.hit = true
-          this.score += this.multiplier++
           if (this.bricks.filter(brick => !brick.hit).length === 0) {
-            this.score *= 2
-            this.gameOver(1)
+            // Game won!
+            this.addReward(1)
+            this.gameOver()
           }
           const directions = Object.keys(touches)
           if (directions.length > 1) {
@@ -104,6 +99,7 @@ class Game {
       const collision = this.getCollision()
       if (collision) {
         if (collision.type === 'paddle') {
+          this.addReward(0.1)
           this.paddle.ghost = true
           const angle = ((collision.x - this.paddle.x + this.paddle.width / 2) * 140) / this.paddle.width + 20
           this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
@@ -115,7 +111,8 @@ class Game {
           switch (collision.type) {
             case 'border': {
               if (collision.y > this.paddle.y) {
-                this.gameOver(-1)
+                this.addReward(-1)
+                this.gameOver()
               } else {
                 this.ball.direction.x *= -1
                 this.ball.direction.y *= -1
@@ -135,10 +132,12 @@ class Game {
           }
         }
         if (collision.type === 'border' && collision.y === this.display.canvas.height) {
-          this.gameOver(-1)
+          this.addReward(-1)
+          this.gameOver()
         }
       }
     }
+    this.score += this.reward
     return this.reward
   }
 }

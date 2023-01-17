@@ -1,29 +1,65 @@
+import * as tf from '@tensorflow/tfjs-node'
+
 import Memory from './memory.js'
 import Network from './network.js'
 
 class Agent {
   constructor ({ settings }) {
-    this.alpha = settings.alpha
+    this.actionSpace = [...Array(settings.network.outputSize).keys()]
     this.epsilon = settings.epsilon
     this.epsilonDecay = settings.epsilonDecay
     this.epsilonMin = settings.epsilonMin
     this.gamma = settings.gamma
-    this.memory = new Memory({ batchSize: settings.memory.batchSize, size: settings.memory.size })
-    this.network = new Network({ inputShape: settings.network.inputShape, layers: settings.network.layers, outputShape: settings.network.outputShape })
-    // TODO: Target network
+    this.memory = new Memory({ settings: settings.memory })
+    this.networkOnline = new Network({ settings: settings.network })
+    this.networkTarget = new Network({ settings: settings.network })
+    this.tau = settings.tau
+    this.tauCounter = 0
   }
 
   act = () => {
-    const { observation } = this.memory.replay[this.memory.replay.length - 1]
-    const actions = this.network.predict(observation)
-    const action = actions.argMax(1).dataSync()[0]
-    switch (action) {
-      case 0:
-        return ''
-      case 1:
-        return 'left'
-      case 2:
-        return 'right'
+    let action
+    if (Math.random() < this.epsilon) {
+      action = Math.floor(Math.random() * this.actionSpace.length)
+    } else {
+      action = tf.tidy(() => {
+        const { state } = this.memory.replay[this.memory.replay.length - 1]
+        const actions = this.networkOnline.advantage([state])
+        return actions.argMax(1).dataSync()[0]
+      })
+    }
+    return action
+  }
+
+  learn = async () => {
+    const memories = this.memory.sample()
+    if (memories.length > 0) {
+      if (this.tauCounter++ % this.tau === 0) {
+        this.networkTarget.setWeights(this.networkOnline.getWeights())
+        console.log(`numTensors: ${tf.memory().numTensors}, epsilon: ${this.epsilon}`)
+      }
+      let advantageOnline, qOnline, states
+      tf.tidy(() => {
+        const newStates = memories.map(memory => memory.newState)
+        states = memories.map(memory => memory.state)
+        advantageOnline = this.networkOnline.advantage(states).arraySync()
+        qOnline = this.networkOnline.q(states).arraySync()
+        const advantageTarget = this.networkTarget.advantage(newStates).arraySync()
+        const qTarget = this.networkTarget.q(newStates).arraySync()
+        const actions = this.networkOnline
+          .advantage(newStates)
+          .argMax(1)
+          .arraySync()
+        memories.forEach((memory, index) => {
+          advantageOnline[index][actions[index]] = memory.reward + (this.gamma * advantageTarget[index][actions[index]] * 1 - memory.terminal ? 1 : 0)
+          qOnline[index][actions[index]] = memory.reward + (this.gamma * qTarget[index][actions[index]] * 1 - memory.terminal ? 1 : 0)
+        })
+      })
+      await this.networkOnline.train({ advantageOnline, qOnline, states })
+      this.epsilon = this.epsilon - this.epsilonDecay
+      if (this.epsilon < this.epsilonMin) {
+        this.epsilon = this.epsilonMin
+      }
     }
   }
 

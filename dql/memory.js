@@ -1,10 +1,10 @@
 import _ from 'lodash'
 
 class Memory {
-  constructor ({ batchSize, size }) {
-    this.batchSize = batchSize
+  constructor ({ settings }) {
+    this.batchSize = settings.batchSize
     this.replay = []
-    this.size = size
+    this.size = settings.size
   }
 
   add = memory => {
@@ -15,9 +15,7 @@ class Memory {
   }
 
   sample = () => {
-    if (this.replay.length > this.batchSize) {
-      return _.sampleSize(this.replay, this.batchSize)
-    }
+    return this.replay.length >= this.batchSize ? _.sampleSize(this.replay, this.batchSize) : []
   }
 }
 

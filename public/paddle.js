@@ -33,6 +33,16 @@ class Paddle extends Polygon {
     ]
   }
 
+  getActionString (action) {
+    switch (action) {
+      case 1:
+        return 'left'
+      case 2:
+        return 'right'
+    }
+    return ''
+  }
+
   // setControls () {
   //   document.onkeydown = event => {
   //     switch (event.key) {
@@ -63,14 +73,15 @@ class Paddle extends Polygon {
   update ({ action, frame }) {
     this.goLeft = false
     this.goRight = false
-    if (['left', 'right'].includes(action)) {
-      this.goLeft = action === 'left'
-      this.goRight = action === 'right'
+    const actionString = this.getActionString(action)
+    if (['left', 'right'].includes(actionString)) {
+      this.goLeft = actionString === 'left'
+      this.goRight = actionString === 'right'
     }
     const goingLeft = this.goLeft && !this.goRight
     const goingRight = !this.goLeft && this.goRight
-    if (frame === 200) {
-      const angle = goingLeft ? 40 : goingRight ? 140 : 90 // Math.floor(Math.random() * 161) + 10
+    if (frame === 0) {
+      const angle = Math.floor(Math.random() * 161) + 10
       this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
       this.ball.playing = true
     }

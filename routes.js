@@ -7,11 +7,12 @@ router.get('/', (request, response) => {
   response.sendFile(path.join(`${__dirname}/../public/index.html`))
 })
 
-router.post('/frame', (request, response) => {
+router.post('/frame', async (request, response) => {
   const agent = request.app.get('agent')
   agent.remember(request.body)
   const action = agent.act()
-  response.send(action)
+  await agent.learn()
+  response.send(`${action}`)
 })
 
 export default router
