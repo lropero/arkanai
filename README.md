@@ -18,5 +18,7 @@ $ npm ci
 ### Usage
 
 ```sh
-$ npm run start # serves at http://localhost:3000
+$ npm run start # serves agent at http://localhost:5000 and game at http://localhost:3000
 ```
+
+_Hi Phil :)_

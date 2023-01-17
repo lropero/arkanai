@@ -33,23 +33,20 @@ class Agent {
 
   learn = async () => {
     const memories = this.memory.sample()
-    if (memories.length > 0) {
+    if (memories.length === this.memory.batchSize) {
       if (this.tauCounter++ % this.tau === 0) {
         this.networkTarget.setWeights(this.networkOnline.getWeights())
         console.log(`numTensors: ${tf.memory().numTensors}, epsilon: ${this.epsilon}`)
       }
-      let advantageOnline, qOnline, states
+      const states = memories.map(memory => memory.state)
+      const newStates = memories.map(memory => memory.newState)
+      let advantageOnline, qOnline
       tf.tidy(() => {
-        const newStates = memories.map(memory => memory.newState)
-        states = memories.map(memory => memory.state)
         advantageOnline = this.networkOnline.advantage(states).arraySync()
         qOnline = this.networkOnline.q(states).arraySync()
+        const actions = this.networkOnline.advantage(newStates).argMax(1).arraySync()
         const advantageTarget = this.networkTarget.advantage(newStates).arraySync()
         const qTarget = this.networkTarget.q(newStates).arraySync()
-        const actions = this.networkOnline
-          .advantage(newStates)
-          .argMax(1)
-          .arraySync()
         memories.forEach((memory, index) => {
           advantageOnline[index][actions[index]] = memory.reward + (this.gamma * advantageTarget[index][actions[index]] * 1 - memory.terminal ? 1 : 0)
           qOnline[index][actions[index]] = memory.reward + (this.gamma * qTarget[index][actions[index]] * 1 - memory.terminal ? 1 : 0)
