@@ -4,7 +4,7 @@ import path from 'path'
 const router = express.Router()
 
 router.get('/', (request, response) => {
-  response.sendFile(path.join(`${__dirname}/../public/index.html`))
+  response.sendFile(path.resolve('../public/index.html'))
 })
 
 router.post('/frame', async (request, response) => {
