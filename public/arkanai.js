@@ -12,7 +12,7 @@ const settings = {
 
 const scores = []
 
-const animate = async ({ action = '', frame = 0, game, state } = {}) => {
+const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
   try {
     if (frame === 0) {
       if (game) {
