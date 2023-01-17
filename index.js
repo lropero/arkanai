@@ -28,9 +28,8 @@ const agentSettings = {
 }
 
 const app = express()
-const port = 5000
-
 app.set('agent', new Agent({ settings: agentSettings }))
+
 app.use(cors())
 app.use(express.json())
 if (app.get('env') === 'development') {
@@ -42,5 +41,7 @@ if (app.get('env') === 'development') {
 }
 app.use('/', routes)
 app.use((request, response) => response.sendStatus(404))
+
+const port = 5000
 app.listen(port)
 console.log(`Agent listening on port ${port}`)
