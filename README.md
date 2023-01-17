@@ -4,7 +4,7 @@ Arkanoid using Double Dueling Deep Q-Learning.
 
 ![arkanai](https://user-images.githubusercontent.com/4450399/212890909-b4d4facd-4585-43c5-8c1c-de573cc10b4f.gif)
 
-**work-in-progress** something isn't quite working 🤔 code-reviews are welcome!
+`work-in-progress` something isn't quite working 🤔 code-reviews are welcome!
 
 ### Requires
 
