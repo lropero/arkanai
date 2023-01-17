@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "author": "Luciano Ropero <lropero@gmail.com>",
   "type": "module",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
     "audit": "npx upgradeps -v",
     "clean": "npx rimraf package-lock.json && npx rimraf node_modules",

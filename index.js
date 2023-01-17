@@ -2,7 +2,7 @@ import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
 
-import Agent from './dql/agent.js'
+import Agent from './d3ql/agent.js'
 import routes from './routes.js'
 
 const agentSettings = {
