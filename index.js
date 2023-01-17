@@ -18,6 +18,7 @@ const agentSettings = {
     alpha: 0.00025, // Learning rate
     inputSize: 5,
     layers: [
+      // Hidden layers
       { activation: 'relu', units: 64 },
       { activation: 'relu', units: 64 }
     ],

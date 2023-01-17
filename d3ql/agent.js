@@ -23,8 +23,8 @@ class Agent {
       action = Math.floor(Math.random() * this.actionSpace.length)
     } else {
       action = tf.tidy(() => {
-        const { state } = this.memory.replay[this.memory.replay.length - 1]
-        const actions = this.networkOnline.advantage([state])
+        const { newState } = this.memory.replay[this.memory.replay.length - 1]
+        const actions = this.networkOnline.advantage([newState])
         return actions.argMax(1).dataSync()[0]
       })
     }
