@@ -1,7 +1,8 @@
 # ArkanAI 🧱🧠
 
-Arkanoid using Double Dueling Deep Q-Learning.
-_work-in-progress_
+Arkanoid using Double Dueling Deep Q-Learning. (_work-in-progress_)
+
+![arkanai](https://user-images.githubusercontent.com/4450399/212890909-b4d4facd-4585-43c5-8c1c-de573cc10b4f.gif)
 
 ### Requires
 
