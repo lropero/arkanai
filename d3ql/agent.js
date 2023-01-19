@@ -18,17 +18,15 @@ class Agent {
   }
 
   act = () => {
-    let action
     if (Math.random() < this.epsilon) {
-      action = Math.floor(Math.random() * this.actionSpace.length)
+      return Math.floor(Math.random() * this.actionSpace.length)
     } else {
-      action = tf.tidy(() => {
+      return tf.tidy(() => {
         const { newState } = this.memory.replay[this.memory.replay.length - 1]
         const actions = this.networkOnline.advantage([newState])
         return actions.argMax(1).dataSync()[0]
       })
     }
-    return action
   }
 
   learn = async () => {
@@ -40,19 +38,16 @@ class Agent {
       }
       const states = memories.map(memory => memory.state)
       const newStates = memories.map(memory => memory.newState)
-      let advantageOnline, qOnline
-      tf.tidy(() => {
-        advantageOnline = this.networkOnline.advantage(states).arraySync()
-        qOnline = this.networkOnline.q(states).arraySync()
-        const actions = this.networkOnline.advantage(newStates).argMax(1).arraySync()
-        const advantageTarget = this.networkTarget.advantage(newStates).arraySync()
+      const [maxActions, qOnline, qTarget] = tf.tidy(() => {
+        const maxActions = this.networkOnline.q(newStates).argMax(1).arraySync()
+        const qOnline = this.networkOnline.q(states).arraySync()
         const qTarget = this.networkTarget.q(newStates).arraySync()
-        memories.forEach((memory, index) => {
-          advantageOnline[index][actions[index]] = memory.reward + (this.gamma * advantageTarget[index][actions[index]] * 1 - memory.terminal ? 1 : 0)
-          qOnline[index][actions[index]] = memory.reward + (this.gamma * qTarget[index][actions[index]] * 1 - memory.terminal ? 1 : 0)
-        })
+        return [maxActions, qOnline, qTarget]
       })
-      await this.networkOnline.train({ advantageOnline, qOnline, states })
+      memories.forEach((memory, index) => {
+        qOnline[index][memory.action] = memory.reward + (this.gamma * qTarget[index][maxActions[index]] * 1 - memory.terminal ? 1 : 0)
+      })
+      await this.networkOnline.train({ q: qOnline, states })
       this.epsilon = this.epsilon - this.epsilonDecay
       if (this.epsilon < this.epsilonMin) {
         this.epsilon = this.epsilonMin

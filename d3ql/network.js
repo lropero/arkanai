@@ -1,17 +1,17 @@
 import * as tf from '@tensorflow/tfjs-node'
 
-class DuelingDeepQ extends tf.layers.Layer {
-  static get className () {
-    return 'DuelingDeepQ'
-  }
-
+class DuelingQ extends tf.layers.Layer {
   call (inputs) {
     const [A, V] = inputs
-    return tf.layers.add().apply([A, V, tf.layers.multiply().apply([tf.mean(A, 1), tf.fill(A.shape, -1)])])
+    return tf.add(V, tf.sub(A, tf.mean(A, 1, true)))
   }
 
   computeOutputShape (inputShape) {
     return inputShape[0]
+  }
+
+  getClassName () {
+    return 'DuelingQ'
   }
 }
 
@@ -25,33 +25,43 @@ class Network {
     })
     const A = tf.layers.dense({ units: settings.outputSize }).apply(outputs)
     const V = tf.layers.dense({ units: 1 }).apply(outputs)
-    this.model = tf.model({ inputs, outputs: [A, new DuelingDeepQ().apply([A, V])] })
-    this.model.compile({ loss: 'meanSquaredError', optimizer: tf.train.adam(settings.alpha) })
+    const Q = new DuelingQ().apply([A, V])
+    this.A = tf.model({ inputs, outputs: A })
+    this.Q = tf.model({ inputs, outputs: Q })
+    this.Q.compile({ loss: 'meanSquaredError', optimizer: tf.train.adam(settings.alpha) })
+    this.updateAdvantage()
   }
 
   advantage (states) {
-    return tf.tidy(() => this.model.predict(tf.tensor(states))[0])
+    return this.A.predict(tf.tensor(states))
   }
 
   getWeights () {
-    return this.model.getWeights()
+    return { aWeights: this.A.getWeights(), qWeights: this.Q.getWeights() }
   }
 
   q (states) {
-    return tf.tidy(() => this.model.predict(tf.tensor(states))[1])
+    return this.Q.predict(tf.tensor(states))
   }
 
-  setWeights (weights) {
-    this.model.setWeights(weights)
+  setWeights ({ aWeights, qWeights }) {
+    this.A.setWeights(aWeights)
+    this.Q.setWeights(qWeights)
   }
 
-  async train ({ advantageOnline, qOnline, states }) {
+  async train ({ q, states }) {
     const x = tf.tensor(states)
-    const y = [tf.tensor(advantageOnline), tf.tensor(qOnline)]
-    await this.model.trainOnBatch(x, y)
+    const y = tf.tensor(q)
+    await this.Q.trainOnBatch(x, y)
     x.dispose()
-    y[0].dispose()
-    y[1].dispose()
+    y.dispose()
+    this.updateAdvantage()
+  }
+
+  updateAdvantage () {
+    const weights = this.Q.getWeights()
+    weights.splice(-2)
+    this.A.setWeights(weights)
   }
 }
 
