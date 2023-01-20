@@ -10,14 +10,21 @@ const settings = {
   size: { height: 200, width: 200 }
 }
 
+const scores = []
+
 const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
   try {
     if (frame === 0) {
       if (chart && game) {
-        chart.data.datasets[0].data.push(game.score)
-        const batch = chart.data.datasets[0].data.slice(-100)
+        scores.push(game.score)
+        const batch = scores.slice(-100)
+        chart.data.datasets[0].data = batch
         chart.data.datasets[1].data.push(batch.reduce((mean, score) => mean + score, 0) / batch.length)
-        chart.data.labels.push(chart.data.datasets[0].data.length)
+        while (chart.data.datasets[1].data.length > batch.length) {
+          chart.data.datasets[1].data.shift()
+          chart.data.labels.shift()
+        }
+        chart.data.labels.push(scores.length)
         chart.update()
       }
       game = new Game({ settings })
@@ -52,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             borderColor: 'pink',
             borderWidth: 1,
-            data: [],
             label: 'Score'
           },
           {
