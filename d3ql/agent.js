@@ -34,7 +34,7 @@ class Agent {
     if (memories.length === this.memory.batchSize) {
       if (this.tauCounter++ % this.tau === 0) {
         this.networkTarget.setWeights(this.networkOnline.getWeights())
-        console.log(`numTensors: ${tf.memory().numTensors}, epsilon: ${this.epsilon}`)
+        console.log(`Tensors ${tf.memory().numTensors} | Memory ${this.memory.replay.length} | Epsilon ${this.epsilon}`)
       }
       const states = memories.map(memory => memory.state)
       const newStates = memories.map(memory => memory.newState)
