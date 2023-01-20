@@ -33,50 +33,38 @@ class Paddle extends Polygon {
     ]
   }
 
-  getActionString (action) {
-    switch (action) {
-      case 1:
-        return 'left'
-      case 2:
-        return 'right'
+  setControls () {
+    this.controls = true
+    document.onkeydown = event => {
+      switch (event.key) {
+        case 'ArrowLeft': {
+          this.goLeft = true
+          break
+        }
+        case 'ArrowRight': {
+          this.goRight = true
+          break
+        }
+      }
     }
-    return ''
+    document.onkeyup = event => {
+      switch (event.key) {
+        case 'ArrowLeft': {
+          this.goLeft = false
+          break
+        }
+        case 'ArrowRight': {
+          this.goRight = false
+          break
+        }
+      }
+    }
   }
 
-  // setControls () {
-  //   document.onkeydown = event => {
-  //     switch (event.key) {
-  //       case 'ArrowLeft': {
-  //         this.goLeft = true
-  //         break
-  //       }
-  //       case 'ArrowRight': {
-  //         this.goRight = true
-  //         break
-  //       }
-  //     }
-  //   }
-  //   document.onkeyup = event => {
-  //     switch (event.key) {
-  //       case 'ArrowLeft': {
-  //         this.goLeft = false
-  //         break
-  //       }
-  //       case 'ArrowRight': {
-  //         this.goRight = false
-  //         break
-  //       }
-  //     }
-  //   }
-  // }
-
   update ({ action, frame }) {
-    this.goLeft = false
-    this.goRight = false
-    const actionString = this.getActionString(action)
-    if (['left', 'right'].includes(actionString)) {
-      this.goLeft = actionString === 'left'
-      this.goRight = actionString === 'right'
+    if (!this.controls) {
+      this.goLeft = action === 1
+      this.goRight = action === 2
     }
     const goingLeft = this.goLeft && !this.goRight
     const goingRight = !this.goLeft && this.goRight

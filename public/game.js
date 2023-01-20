@@ -24,10 +24,6 @@ class Game {
     this.polygon = this.createPolygon()
   }
 
-  addReward (reward) {
-    this.reward += reward
-  }
-
   createPolygon () {
     return [
       { x: 0, y: 0 },
@@ -75,7 +71,6 @@ class Game {
           brick.hit = true
           if (this.bricks.filter(brick => !brick.hit).length === 0) {
             // Game won!
-            this.addReward(1)
             this.gameOver()
           }
           const directions = Object.keys(touches)
@@ -90,7 +85,6 @@ class Game {
   }
 
   update ({ action, frame }) {
-    this.reward = 0
     this.display.ctx.clearRect(0, 0, this.display.canvas.width, this.display.canvas.height)
     this.drawBricks()
     this.paddle.update({ action, frame })
@@ -99,7 +93,6 @@ class Game {
       const collision = this.getCollision()
       if (collision) {
         if (collision.type === 'paddle') {
-          this.addReward(0.1)
           this.paddle.ghost = true
           const angle = ((collision.x - this.paddle.x + this.paddle.width / 2) * 140) / this.paddle.width + 20
           this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
@@ -111,7 +104,6 @@ class Game {
           switch (collision.type) {
             case 'border': {
               if (collision.y > this.paddle.y) {
-                this.addReward(-1)
                 this.gameOver()
               } else {
                 this.ball.direction.x *= -1
@@ -132,12 +124,12 @@ class Game {
           }
         }
         if (collision.type === 'border' && collision.y === this.display.canvas.height) {
-          this.addReward(-1)
           this.gameOver()
         }
       }
     }
-    this.score += this.reward
-    return this.reward
+    const reward = this.paddle.width - Math.abs(this.ball.x - this.paddle.x)
+    this.score += reward
+    return reward
   }
 }
