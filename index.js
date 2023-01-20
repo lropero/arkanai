@@ -7,7 +7,7 @@ import routes from './routes.js'
 
 const agentSettings = {
   epsilon: 1, // Exploration rate
-  epsilonDecay: 0.00005, // Exploration decay
+  epsilonDecay: 0.000025, // Exploration decay
   epsilonMin: 0.01, // Exploration minimum
   gamma: 0.95, // Discount factor
   memory: {

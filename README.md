@@ -1,6 +1,6 @@
 # ArkanAI 🧱🧠
 
-Arkanoid using Double Dueling Deep Q-Learning with TensorFlow.js.
+Arkanoid with Double Dueling Deep Q-Learning using TensorFlow.js.
 
 - `work-in-progress` code-reviews are welcome!
 
