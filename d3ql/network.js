@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs-node'
 
-class DuelingQ extends tf.layers.Layer {
+class DuelingQLayer extends tf.layers.Layer {
   call (inputs) {
     const [A, V] = inputs
     return tf.add(V, tf.sub(A, tf.mean(A, 1, true)))
@@ -11,7 +11,7 @@ class DuelingQ extends tf.layers.Layer {
   }
 
   getClassName () {
-    return 'DuelingQ'
+    return 'DuelingQLayer'
   }
 }
 
@@ -25,7 +25,7 @@ class Network {
     })
     const A = tf.layers.dense({ units: settings.outputSize }).apply(outputs)
     const V = tf.layers.dense({ units: 1 }).apply(outputs)
-    const Q = new DuelingQ().apply([A, V])
+    const Q = new DuelingQLayer().apply([A, V])
     this.A = tf.model({ inputs, outputs: A })
     this.Q = tf.model({ inputs, outputs: Q })
     this.Q.compile({ loss: 'meanSquaredError', optimizer: tf.train.adam(settings.alpha) })
