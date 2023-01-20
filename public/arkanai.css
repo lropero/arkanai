@@ -8,8 +8,22 @@ body {
 }
 
 #canvas {
+  display: flex;
+  height: 300px;
+  justify-content: space-around;
+  width: 700px;
+}
+
+#chart {
+  background-color: #eee;
+  border-radius: 8px;
+  height: 300px;
+  width: 300px;
+}
+
+#game {
   background-color: #111;
   border-radius: 8px;
-  height: 400px;
-  width: 400px;
+  height: 300px;
+  width: 300px;
 }

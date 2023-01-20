@@ -4,21 +4,21 @@ const settings = {
   alpha: 1,
   ball: { colors: ['blue', 'green', 'red', 'white', 'yellow'], radius: 2, sides: 12, speed: 3 },
   brick: { colors: ['#957dad', '#d291bc', '#e0bbe4', '#fec8d8', '#ffdfd3'], height: 8, padding: 2, width: 18 },
-  canvas: { height: 200, width: 200 },
   padding: 20,
   paddle: { color: '#4020d0', height: 5, speed: 2, width: 30 },
-  rows: 5
+  rows: 5,
+  size: { height: 200, width: 200 }
 }
-
-const scores = []
 
 const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
   try {
     if (frame === 0) {
-      if (game) {
-        scores.push(game.score)
-        const batch = scores.slice(-100)
-        console.log(`#${scores.length}: ${game.score.toFixed(2)} (${(batch.reduce((mean, score) => mean + score, 0) / batch.length).toFixed(2)})`)
+      if (chart && game) {
+        chart.data.datasets[0].data.push(game.score)
+        const batch = chart.data.datasets[0].data.slice(-100)
+        chart.data.datasets[1].data.push(batch.reduce((mean, score) => mean + score, 0) / batch.length)
+        chart.data.labels.push(chart.data.datasets[0].data.length)
+        chart.update()
       }
       game = new Game({ settings })
     }
@@ -37,10 +37,35 @@ const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const display = {}
-  display.canvas = document.getElementById('canvas')
-  display.canvas.height = settings.canvas.height ?? window.innerHeight - 16
-  display.canvas.width = settings.canvas.width ?? window.innerWidth - 16
+  display.canvas = document.getElementById('game')
+  display.canvas.height = settings.size?.height ?? window.innerHeight - 16
+  display.canvas.width = settings.size?.width ?? window.innerWidth - 16
   display.ctx = display.canvas.getContext('2d')
   settings.display = display
+  if (settings.size) {
+    const canvas = document.getElementById('chart')
+    canvas.height = settings.size.height
+    canvas.width = settings.size.width
+    chart = new Chart(canvas, {
+      data: {
+        datasets: [
+          {
+            borderColor: 'pink',
+            borderWidth: 1,
+            data: [],
+            label: 'Score'
+          },
+          {
+            borderColor: '#4020d0',
+            borderWidth: 1,
+            data: [],
+            label: 'Mean'
+          }
+        ],
+        labels: []
+      },
+      type: 'line'
+    })
+  }
   animate()
 })
