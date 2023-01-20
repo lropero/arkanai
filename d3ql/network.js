@@ -53,9 +53,9 @@ class Network {
     const x = tf.tensor(states)
     const y = tf.tensor(q)
     await this.Q.trainOnBatch(x, y)
+    this.updateAdvantage()
     x.dispose()
     y.dispose()
-    this.updateAdvantage()
   }
 
   updateAdvantage () {
