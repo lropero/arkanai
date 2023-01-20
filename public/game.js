@@ -84,6 +84,16 @@ class Game {
     return null
   }
 
+  getReward () {
+    // Reward shaping
+    const distance = Math.abs(this.ball.x - this.paddle.x)
+    let reward = this.paddle.width - distance
+    if (distance < this.paddle.width / 10) {
+      reward -= this.paddle.width
+    }
+    return reward
+  }
+
   update ({ action, frame }) {
     this.display.ctx.clearRect(0, 0, this.display.canvas.width, this.display.canvas.height)
     this.drawBricks()
@@ -128,7 +138,7 @@ class Game {
         }
       }
     }
-    const reward = this.paddle.width - Math.abs(this.ball.x - this.paddle.x)
+    const reward = this.getReward()
     this.score += reward
     return reward
   }
