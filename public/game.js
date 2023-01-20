@@ -99,12 +99,10 @@ class Game {
       const collision = this.getCollision()
       if (collision) {
         if (collision.type === 'paddle') {
+          this.addReward(0.1)
           this.paddle.ghost = true
           const angle = ((collision.x - this.paddle.x + this.paddle.width / 2) * 140) / this.paddle.width + 20
           this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
-          if (collision.direction === 'horizontal') {
-            this.addReward(0.1)
-          }
         } else {
           this.ball.direction.x *= collision.direction === 'vertical' ? -1 : 1
           this.ball.direction.y *= collision.direction === 'horizontal' ? -1 : 1
