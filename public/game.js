@@ -102,7 +102,7 @@ class Game {
           this.paddle.ghost = true
           const angle = ((collision.x - this.paddle.x + this.paddle.width / 2) * 140) / this.paddle.width + 20
           this.ball.direction = { x: this.ball.speed * -Math.cos(angle * (Math.PI / 180)), y: this.ball.speed * -Math.sin(angle * (Math.PI / 180)) }
-          if (this.ball.direction.y < 0) {
+          if (collision.direction === 'horizontal') {
             this.addReward(0.1)
           }
         } else {
