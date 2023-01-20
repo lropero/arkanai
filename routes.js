@@ -10,9 +10,8 @@ router.get('/', (request, response) => {
 router.post('/frame', async (request, response) => {
   const agent = request.app.get('agent')
   agent.remember(request.body)
-  const action = agent.act()
   await agent.learn()
-  response.send(`${action}`)
+  response.send(`${agent.act()}`)
 })
 
 export default router
