@@ -2,9 +2,7 @@
 
 Arkanoid with Double Dueling Deep Q-Learning using TensorFlow.js.
 
-- `work-in-progress` code-reviews are welcome!
-
-![arkanai](https://user-images.githubusercontent.com/4450399/212890909-b4d4facd-4585-43c5-8c1c-de573cc10b4f.gif)
+![arkanai](https://user-images.githubusercontent.com/4450399/213893893-ecfa2b2e-0efd-4908-9295-83f465374ed5.gif)
 
 ### Requires
 
@@ -23,4 +21,8 @@ $ npm ci
 $ npm run start # serves game at http://localhost:3000 and starts agent at http://localhost:5000 concurrently
 ```
 
-_Hi Phil :)_
+### Upcoming
+
+- Prioritized experience replay
+- Noisy nets
+- 🌈
