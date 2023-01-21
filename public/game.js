@@ -87,11 +87,8 @@ class Game {
   getReward () {
     // Reward shaping
     const distance = Math.abs(this.ball.x - this.paddle.x)
-    let reward = this.paddle.width - distance
-    if (distance < this.paddle.width / 10) {
-      reward -= this.paddle.width
-    }
-    return reward
+    const reward = this.paddle.width / 2 - distance
+    return reward > 0 ? reward : 0
   }
 
   update ({ action, frame }) {

@@ -12,7 +12,7 @@ const agentSettings = {
   gamma: 0.95, // Discount factor
   memory: {
     batchSize: 64,
-    size: 100000
+    size: 50000
   },
   network: {
     alpha: 0.00025, // Learning rate
