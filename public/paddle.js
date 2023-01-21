@@ -10,15 +10,14 @@ class Paddle extends Polygon {
     this.alpha = settings.alpha
     this.ball = ball
     this.color = settings.paddle.color
-    this.display = settings.display
     this.ghost = true
     this.goLeft = false
     this.goRight = false
     this.height = paddleHeight > 0 ? paddleHeight : 1
     this.speed = settings.paddle.speed
-    this.width = paddleWidth >= ballDiameter && paddleWidth < this.display.canvas.width - 1 ? paddleWidth : ballDiameter
-    this.x = this.display.canvas.width / 2
-    this.y = this.display.canvas.height - this.height / 2 - padding
+    this.width = paddleWidth >= ballDiameter && paddleWidth < window.display.canvas.width - 1 ? paddleWidth : ballDiameter
+    this.x = window.display.canvas.width / 2
+    this.y = window.display.canvas.height - this.height / 2 - padding
     this.ball.x = this.x
     this.ball.y = this.y - this.height / 2 - this.ball.radius
     // this.setControls()
@@ -78,8 +77,8 @@ class Paddle extends Polygon {
     } else if (goingRight) {
       this.x += this.speed
     }
-    if (this.x > this.display.canvas.width - this.width / 2) {
-      this.x = this.display.canvas.width - this.width / 2
+    if (this.x > window.display.canvas.width - this.width / 2) {
+      this.x = window.display.canvas.width - this.width / 2
     } else if (this.x < this.width / 2) {
       this.x = this.width / 2
     }
@@ -89,6 +88,6 @@ class Paddle extends Polygon {
       this.ghost = false
     }
     this.polygon = this.createPolygon()
-    this.draw(this.display.ctx)
+    this.draw()
   }
 }

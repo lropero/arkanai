@@ -4,7 +4,6 @@ class Game {
   constructor ({ settings }) {
     this.ball = new Ball({ settings })
     this.bricks = []
-    this.display = settings.display
     this.lost = false
     this.paddle = new Paddle({ ball: this.ball, settings })
     this.score = 0
@@ -12,11 +11,11 @@ class Game {
     const brickPadding = Math.round(settings.brick.padding)
     const brickWidth = Math.round(settings.brick.width)
     const padding = Math.round(settings.padding)
-    const cols = Math.floor((this.display.canvas.width - padding * 2) / (brickPadding + brickWidth))
+    const cols = Math.floor((window.display.canvas.width - padding * 2) / (brickPadding + brickWidth))
     const rows = settings.rows
     for (let col = 0; col < cols; col++) {
       for (let row = 0; row < rows; row++) {
-        const margin = Math.max(padding, (this.display.canvas.width - cols * (brickPadding + brickWidth) + brickPadding) / 2)
+        const margin = Math.max(padding, (window.display.canvas.width - cols * (brickPadding + brickWidth) + brickPadding) / 2)
         const brick = new Brick({ alpha: settings.alpha, color: settings.brick.colors[Math.floor(Math.random() * settings.brick.colors.length)], height: brickHeight, width: brickWidth, x: col * (brickPadding + brickWidth) + brickWidth / 2 + margin, y: row * (brickHeight + brickPadding * 0.8) + brickHeight / 2 + margin })
         this.bricks.push(brick)
       }
@@ -27,16 +26,16 @@ class Game {
   createPolygon () {
     return [
       { x: 0, y: 0 },
-      { x: this.display.canvas.width, y: 0 },
-      { x: this.display.canvas.width, y: this.display.canvas.height },
-      { x: 0, y: this.display.canvas.height }
+      { x: window.display.canvas.width, y: 0 },
+      { x: window.display.canvas.width, y: window.display.canvas.height },
+      { x: 0, y: window.display.canvas.height }
     ]
   }
 
   drawBricks () {
     for (const brick of this.bricks) {
       if (!brick.hit) {
-        brick.draw(this.display.ctx)
+        brick.draw()
       }
     }
   }
@@ -95,7 +94,7 @@ class Game {
   }
 
   update ({ action, frame }) {
-    this.display.ctx.clearRect(0, 0, this.display.canvas.width, this.display.canvas.height)
+    window.display.ctx.clearRect(0, 0, window.display.canvas.width, window.display.canvas.height)
     this.drawBricks()
     this.paddle.update({ action, frame })
     this.ball.update()
@@ -133,7 +132,7 @@ class Game {
             }
           }
         }
-        if (collision.type === 'border' && collision.y === this.display.canvas.height) {
+        if (collision.type === 'border' && collision.y === window.display.canvas.height) {
           this.gameOver()
         }
       }

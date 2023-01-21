@@ -8,7 +8,6 @@ class Ball extends Polygon {
     this.alpha = settings.alpha
     this.color = settings.ball.colors[Math.floor(Math.random() * settings.ball.colors.length)]
     this.direction = { x: 0, y: 0 }
-    this.display = settings.display
     this.playing = false
     this.radius = ballRadius
     this.sides = ballSides > 2 ? ballSides : 3
@@ -35,18 +34,18 @@ class Ball extends Polygon {
         if (this.x - this.radius < 0) {
           this.x = this.radius
         }
-        if (this.x + this.radius > this.display.canvas.width) {
-          this.x = this.display.canvas.width - this.radius
+        if (this.x + this.radius > window.display.canvas.width) {
+          this.x = window.display.canvas.width - this.radius
         }
         if (this.y - this.radius < 0) {
           this.y = this.radius
         }
-        if (this.y + this.radius > this.display.canvas.height) {
-          this.y = this.display.canvas.height - this.radius
+        if (this.y + this.radius > window.display.canvas.height) {
+          this.y = window.display.canvas.height - this.radius
         }
       }
       this.polygon = this.createPolygon()
-      this.draw(this.display.ctx)
+      this.draw()
     }
   }
 }

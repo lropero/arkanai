@@ -15,17 +15,20 @@ const scores = []
 const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
   try {
     if (frame === 0) {
-      if (chart && game) {
-        scores.push(game.score)
-        const batch = scores.slice(-100)
-        chart.data.datasets[0].data.push(batch.reduce((mean, score) => mean + score, 0) / batch.length)
-        while (chart.data.datasets[0].data.length > batch.length) {
-          chart.data.datasets[0].data.shift()
-          chart.data.labels.shift()
+      if (game) {
+        const chart = window.chart
+        if (chart) {
+          scores.push(game.score)
+          const batch = scores.slice(-100)
+          chart.data.datasets[0].data.push(batch.reduce((mean, score) => mean + score, 0) / batch.length)
+          while (chart.data.datasets[0].data.length > batch.length) {
+            chart.data.datasets[0].data.shift()
+            chart.data.labels.shift()
+          }
+          chart.data.datasets[1].data = batch
+          chart.data.labels.push(scores.length)
+          chart.update()
         }
-        chart.data.datasets[1].data = batch
-        chart.data.labels.push(scores.length)
-        chart.update()
       }
       game = new Game({ settings })
     }
@@ -43,35 +46,31 @@ const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const display = {}
-  display.canvas = document.getElementById('game')
-  display.canvas.height = settings.size?.height ?? window.innerHeight - 16
-  display.canvas.width = settings.size?.width ?? window.innerWidth - 16
-  display.ctx = display.canvas.getContext('2d')
-  settings.display = display
-  if (settings.size) {
-    const canvas = document.getElementById('chart')
-    canvas.height = settings.size.height
-    canvas.width = settings.size.width
-    chart = new Chart(canvas, {
-      data: {
-        datasets: [
-          {
-            borderColor: '#4020d0',
-            borderWidth: 1,
-            data: [],
-            label: 'Mean'
-          },
-          {
-            borderColor: 'pink',
-            borderWidth: 1,
-            label: 'Score'
-          }
-        ],
-        labels: []
-      },
-      type: 'line'
-    })
-  }
+  const canvasChart = document.getElementById('chart')
+  canvasChart.height = 400
+  canvasChart.width = 400
+  const canvasGame = document.getElementById('game')
+  canvasGame.height = settings.size.height
+  canvasGame.width = settings.size.width
+  window.chart = new Chart(canvasChart, {
+    data: {
+      datasets: [
+        {
+          borderColor: '#4020d0',
+          borderWidth: 1,
+          data: [],
+          label: 'Mean'
+        },
+        {
+          borderColor: 'pink',
+          borderWidth: 1,
+          label: 'Score'
+        }
+      ],
+      labels: []
+    },
+    type: 'line'
+  })
+  window.display = { canvas: canvasGame, ctx: canvasGame.getContext('2d') }
   animate()
 })

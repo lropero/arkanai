@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 class Polygon {
-  draw (ctx) {
+  draw () {
+    const { ctx } = window.display
     ctx.globalAlpha = this.alpha
     ctx.beginPath()
     ctx.moveTo(this.polygon[0].x, this.polygon[0].y)
