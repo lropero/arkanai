@@ -33,7 +33,7 @@ body {
   align-items: center;
   background-color: black;
   color: white;
-  display: none;
+  display: flex;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 3em;
   height: 100vh;
@@ -42,5 +42,6 @@ body {
   opacity: 0.5;
   position: absolute;
   top: 0;
+  visibility: hidden;
   width: 100vw;
 }

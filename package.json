@@ -12,7 +12,7 @@
     "clean": "npx rimraf package-lock.json && npx rimraf node_modules",
     "lint": "npx prettier-standard --lint",
     "nuke": "npm run clean && npm cache verify && npm install",
-    "start": "npx concurrently 'npx serve public' 'node index.js'"
+    "start": "npx concurrently \"npx serve public\" \"node index.js\""
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "4.2.0",

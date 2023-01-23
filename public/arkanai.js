@@ -42,7 +42,7 @@ const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
     const { data: nextAction } = await axios.post('http://localhost:5000/frame', { action, newState, reward, state, terminal })
     if (settings.targetMeanScore > 0 && chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] >= settings.targetMeanScore) {
       document.getElementById('message').innerHTML = `Target mean score ${settings.targetMeanScore} reached after ${scores.length} game${scores.length > 1 ? 's' : ''}`
-      document.getElementById('message').style.display = 'flex'
+      document.getElementById('message').style.visibility = 'visible'
     } else {
       window.requestAnimationFrame(() => animate({ action: parseInt(nextAction, 10), frame: terminal ? 0 : ++frame, game, state: newState }))
     }
