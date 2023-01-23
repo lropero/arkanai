@@ -42,6 +42,7 @@ const agentSettings = {
   epsilonDecay: 0.00005, // Exploration decay
   epsilonMin: 0.01, // Exploration minimum
   gamma: 0.95, // Discount factor
+  tau: 1000, // Update of target network
   memory: {
     batchSize: 64,
     cer: true, // Combined experience replay
@@ -56,8 +57,7 @@ const agentSettings = {
       { activation: 'relu', units: 64 }
     ],
     outputSize: 3
-  },
-  tau: 1000 // Update of target network
+  }
 }
 ```
 
