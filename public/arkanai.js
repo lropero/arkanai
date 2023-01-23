@@ -7,7 +7,8 @@ const settings = {
   padding: 20,
   paddle: { color: '#4020d0', height: 5, speed: 2, width: 30 },
   rows: 5,
-  size: { height: 200, width: 200 }
+  size: { height: 200, width: 200 },
+  targetMeanScore: 1000 // 0 runs forever
 }
 
 const scores = []
@@ -39,7 +40,12 @@ const animate = async ({ action = 0, frame = 0, game, state } = {}) => {
     const newState = [game.ball.direction.x, game.ball.direction.y, game.ball.x, game.ball.y, game.paddle.x]
     const terminal = game.lost
     const { data: nextAction } = await axios.post('http://localhost:5000/frame', { action, newState, reward, state, terminal })
-    window.requestAnimationFrame(() => animate({ action: parseInt(nextAction, 10), frame: terminal ? 0 : ++frame, game, state: newState }))
+    if (settings.targetMeanScore > 0 && chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] >= settings.targetMeanScore) {
+      document.getElementById('message').innerHTML = `Target mean score ${settings.targetMeanScore} reached after ${scores.length} game${scores.length > 1 ? 's' : ''}`
+      document.getElementById('message').style.display = 'flex'
+    } else {
+      window.requestAnimationFrame(() => animate({ action: parseInt(nextAction, 10), frame: terminal ? 0 : ++frame, game, state: newState }))
+    }
   } catch (error) {
     console.error(error.toString())
   }

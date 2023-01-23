@@ -2,7 +2,7 @@
   "name": "arkanai",
   "version": "1.0.0",
   "private": true,
-  "description": "Arkanoid with Double Dueling Deep Q-Learning using TensorFlow.js.",
+  "description": "Arkanoid with Deep Q-Learning using TensorFlow.js.",
   "license": "UNLICENSED",
   "author": "Luciano Ropero <lropero@gmail.com>",
   "type": "module",
