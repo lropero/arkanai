@@ -7,7 +7,6 @@ class Game {
     this.lost = false
     this.paddle = new Paddle({ ball: this.ball, settings })
     this.score = 0
-    this.scoreColor = settings.brick.colors[Math.floor(Math.random() * settings.brick.colors.length)]
     const brickHeight = Math.round(settings.brick.height)
     const brickPadding = Math.round(settings.brick.padding)
     const brickWidth = Math.round(settings.brick.width)
@@ -43,10 +42,10 @@ class Game {
 
   drawScore () {
     const { canvas, ctx } = window.display
-    ctx.fillStyle = this.score >= 0 ? this.scoreColor : 'red'
+    ctx.fillStyle = this.score >= 0 ? '#666' : 'red'
     ctx.font = '12px Comic Sans MS'
     ctx.textAlign = 'right'
-    ctx.fillText(this.score.toFixed(2), canvas.width - 6, 15)
+    ctx.fillText(this.score.toFixed(2), canvas.width - 6, canvas.height - 6)
   }
 
   gameOver () {
