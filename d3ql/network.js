@@ -1,6 +1,8 @@
 import * as tf from '@tensorflow/tfjs-node'
 
 class DuelingQLayer extends tf.layers.Layer {
+  static className = 'DuelingQLayer'
+
   call (inputs) {
     const [A, V] = inputs
     return tf.add(V, tf.sub(A, tf.mean(A, 1, true)))
@@ -9,11 +11,9 @@ class DuelingQLayer extends tf.layers.Layer {
   computeOutputShape (inputShape) {
     return inputShape[0]
   }
-
-  getClassName () {
-    return 'DuelingQLayer'
-  }
 }
+
+tf.serialization.registerClass(DuelingQLayer)
 
 // Dueling Deep Q-Network
 class Network {
