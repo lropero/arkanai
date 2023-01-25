@@ -23,13 +23,13 @@ Arkanoid with Deep Q-Learning using TensorFlow.js.
 ### Installation
 
 ```sh
-$ npm ci
+npm ci
 ```
 
 ### Usage
 
 ```sh
-$ npm run start # serves game at http://localhost:3000 and starts agent at http://localhost:5000 concurrently
+npm run start # serves game at http://localhost:3000 and starts agent at http://localhost:5000 concurrently
 ```
 
 ### Settings

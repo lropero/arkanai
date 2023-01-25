@@ -37,16 +37,16 @@ class Network {
   }
 
   getWeights () {
-    return { aWeights: this.A.getWeights(), qWeights: this.Q.getWeights() }
+    return this.Q.getWeights()
   }
 
   q (states) {
     return this.Q.predict(tf.tensor(states))
   }
 
-  setWeights ({ aWeights, qWeights }) {
-    this.A.setWeights(aWeights)
-    this.Q.setWeights(qWeights)
+  setWeights (weights) {
+    this.Q.setWeights(weights)
+    this.updateAdvantage()
   }
 
   async train ({ q, states }) {
