@@ -49,7 +49,7 @@ class Agent {
       })
       await this.networkOnline.train({ q: qOnline, states })
       this.epsilon = this.epsilon - this.epsilonDecay
-      if (this.epsilon < this.epsilonMin) {
+      if (this.epsilon > 0 && this.epsilon < this.epsilonMin) {
         this.epsilon = this.epsilonMin
       }
     }

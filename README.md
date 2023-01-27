@@ -18,7 +18,7 @@ Arkanoid with Deep Q-Learning using TensorFlow.js.
 ### Requires
 
 - [Node v18.13.0](https://nodejs.org/)
-- npm v9.3.1
+- npm v9.4.0
 
 ### Installation
 
