@@ -48,9 +48,11 @@ class Agent {
         qOnline[index][memory.action] = memory.reward + (this.gamma * qTarget[index][maxActions[index]] * 1 - memory.terminal ? 1 : 0)
       })
       await this.networkOnline.train({ q: qOnline, states })
-      this.epsilon = this.epsilon - this.epsilonDecay
-      if (this.epsilon > 0 && this.epsilon < this.epsilonMin) {
-        this.epsilon = this.epsilonMin
+      if (this.epsilon > 0) {
+        this.epsilon = this.epsilon - this.epsilonDecay
+        if (this.epsilon < this.epsilonMin) {
+          this.epsilon = this.epsilonMin
+        }
       }
     }
   }
