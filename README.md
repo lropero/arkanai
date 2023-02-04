@@ -19,7 +19,7 @@ Arkanoid with Deep Q-Learning using TensorFlow.js.
 
 - [Node v18.14.0](https://nodejs.org/)
 - npm v9.4.1
-- Node.js native addon build tool → [node-gyp](https://github.com/nodejs/node-gyp) (_required by library [@tensorflow/tfjs-node](https://www.npmjs.com/package/@tensorflow/tfjs-node)_) [or alternatively use `@tensorflow/tfjs` which doesn't require compilation]
+- Node.js native addon build tool → [node-gyp](https://github.com/nodejs/node-gyp) (_required by [@tensorflow/tfjs-node](https://www.npmjs.com/package/@tensorflow/tfjs-node)_) [or alternatively use `@tensorflow/tfjs` which doesn't require compilation]
 
 ### Installation
 
