@@ -13,7 +13,7 @@
     "lint": "npx prettier-standard --lint",
     "nuke": "npm run clean && npm cache verify && npm install",
     "sort": "npx sort-package-json",
-    "start": "npx concurrently \"npx serve public\" \"node index.js\""
+    "start": "npx concurrently \"node index.js\" \"npx serve public\""
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "4.2.0",
