@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "audit": "npx upgradeps -v",
-    "clean": "npx rimraf package-lock.json && npx rimraf node_modules",
+    "clean": "npx rimraf node_modules && npx rimraf package-lock.json",
     "lint": "npx prettier-standard --lint",
     "nuke": "npm run clean && npm cache verify && npm install",
     "sort": "npx sort-package-json",
